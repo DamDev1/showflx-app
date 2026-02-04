@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { Play } from "lucide-react-native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -23,10 +24,11 @@ export function MovieCard({
     variant = "poster",
     progress,
     onPress,
-}: MovieCardProps) {
+    style,
+}: MovieCardProps & { style?: any }) {
     if (variant === "highlight") {
         return (
-            <TouchableOpacity onPress={onPress} className="mr-4 w-[280px]">
+            <TouchableOpacity onPress={onPress} className="mr-5 w-[280px]">
                 <View className="h-[180px] w-full rounded-2xl overflow-hidden relative bg-gray-200">
                     <Image source={{ uri: imageUrl }} className="absolute inset-0 w-full h-full" resizeMode="cover" />
                     {progress !== undefined && (
@@ -67,23 +69,34 @@ export function MovieCard({
 
     if (variant === "compact") {
         return (
-            <TouchableOpacity onPress={onPress} className="mr-3 w-[140px]">
-                <View className="h-[200px] w-full rounded-3xl overflow-hidden relative bg-gray-200 border-2 border-transparent focus:border-purple-500">
-                    <Image source={{ uri: imageUrl }} className="absolute inset-0 w-full h-full" resizeMode="cover" />
-                    {/* Play Button Overlay */}
-                    <View className="absolute inset-0 bg-black/10 items-center justify-center">
-                        <View className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md items-center justify-center">
-                            <Play size={16} color="white" fill="white" className="ml-0.5" />
+            <TouchableOpacity onPress={onPress} className="mr-4 w-[140px]" style={style}>
+                <View className="h-[210px] w-full rounded-[18px] overflow-hidden relative bg-gray-200 shadow-sm">
+                    <LinearGradient
+                        colors={['#4f44ef7d', '#d044ef88']}
+                        start={{ x: 0.5, y: 0 }}
+                        end={{ x: 0.5, y: 1 }}
+                        className="w-full h-full p-[2px] rounded-[18px]"
+                    >
+                        <View className="p-0.5">
+                            <Image
+                                source={{ uri: imageUrl }}
+                                className="w-full h-full rounded-[16px]"
+                                resizeMode="cover"
+                            />
                         </View>
+                    </LinearGradient>
+
+                    <View className="absolute bottom-3 left-3 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md items-center justify-center border border-white/30">
+                        <Play size={15} color="white" fill="white" className="ml-0.5" />
                     </View>
 
                     {progress !== undefined && (
-                        <View className="absolute bottom-4 left-4 right-4 h-1 bg-white/30 rounded-full overflow-hidden">
-                            <View className="h-full bg-green-400 rounded-full" style={{ width: `${progress * 100}%` as any }} />
+                        <View className="absolute bottom-0 left-0 right-0 h-1 bg-white/30">
+                            <View className="h-full bg-red-500" style={{ width: `${progress * 100}%` as any }} />
                         </View>
                     )}
                 </View>
-                <Text className="text-sm font-semibold text-primary mt-2 ml-1" numberOfLines={1}>{title}</Text>
+                <Text className="text-sm font-bold text-primary mt-3 ml-1" numberOfLines={1}>{title}</Text>
             </TouchableOpacity>
         );
     }

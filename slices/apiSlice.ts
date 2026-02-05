@@ -10,38 +10,20 @@ interface ErrorResponse {
     data: { message: string };
 }
 
-const getAuthToken = (): Token | null => {
-
-    try {
-        const token = localStorage.getItem("showflx-auth");
-        if (token) {
-            return JSON.parse(token);
-        }
-        return null;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
-
 const baseQuery = fetchBaseQuery({
     baseUrl: "https://api.showflx.com/api/v1",
+    prepareHeaders: (headers, { getState }) => {
+        const token = (getState() as any).auth.token;
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`);
+        }
+        headers.set('x-request-source', 'mobile');
+        return headers;
+    },
 });
 
 const baseQueryWithAuth: BaseQueryFn = async (args, api, extraOptions) => {
-    const token = getAuthToken();
-
-    const requestArgs = typeof args === 'string' ? { url: args, headers: {} } : { ...args, headers: { ...args.headers } };
-
-    if (token?.accessToken) {
-        requestArgs.headers['Authorization'] = `Bearer ${token.accessToken}`;
-    }
-    if (token?.refreshToken) {
-        requestArgs.headers['x-refresh'] = token.refreshToken;
-    }
-    requestArgs.headers['x-request-source'] = 'mobile';
-
-    const result = await baseQuery(requestArgs, api, extraOptions);
+    const result = await baseQuery(args, api, extraOptions);
 
     if (result.error) {
         return {

@@ -38,6 +38,7 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
     const player = useVideoPlayer(item.videoUrl, player => {
         player.loop = true;
     });
+    const router = useRouter();
     const [isPlaying, setIsPlaying] = useState(isActive);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -85,7 +86,7 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
 
                 {isLoading && isPlaying && (
                     <View className="absolute inset-0 items-center justify-center bg-black/10 z-10">
-                        <ActivityIndicator size="large"/>
+                        <ActivityIndicator size="large" />
                     </View>
                 )}
 
@@ -96,11 +97,9 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
                 )}
             </TouchableOpacity>
 
-            {/* Gradient Overlay */}
             <View className="absolute inset-0 bg-black/10 pointer-events-none" />
             <View className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
-            {/* Right Action Bar */}
             <View className="absolute bottom-20 right-4 items-center gap-6">
                 <View className="items-center gap-1">
                     <TouchableOpacity>
@@ -125,15 +124,17 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom Info */}
             <View className="absolute bottom-8 left-4 right-16">
                 <Text className="text-white font-bold text-lg mb-1">@{item.user}</Text>
                 <Text className="text-white/90 text-sm leading-5">{item.title} #movie #cinema #shorts</Text>
 
-                <View className="flex-row items-center mt-3 bg-white/20 self-start px-3 py-1.5 rounded-full backdrop-blur-sm">
+                <TouchableOpacity
+                    className="flex-row items-center mt-3 bg-white/20 self-start px-3 py-1.5 rounded-full backdrop-blur-sm"
+                    onPress={() => { player.pause(); router.push('/movie/1') }}
+                >
                     <Play size={12} color="white" fill="white" className="mr-2" />
                     <Text className="text-white text-xs font-bold">Watch Now</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

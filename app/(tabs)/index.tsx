@@ -96,8 +96,8 @@ export default function BrowsePage() {
                         horizontal
                         data={TRENDING}
                         renderItem={({ item }) => (
-                            <View className={`rounded-[26px] p-[2px] mr-3`}>
-                                <View className={`bg-card rounded-[24px]`}>
+                            <View className={``}>
+                                <View>
                                     <MovieCard
                                         title={item.title}
                                         imageUrl={item.imageUrl}

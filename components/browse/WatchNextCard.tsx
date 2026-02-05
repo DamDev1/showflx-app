@@ -45,7 +45,6 @@ export default function WatchNextCard({ movie }: WatchNextCardProps) {
 
                     <View className="flex-row items-center gap-2">
                         <View className="bg-yellow-400 px-2 py-1 rounded-lg flex-row items-center">
-                            <Text className="text-xs font-bold text-black border-2 border-transparent border-b-black/80 pb-[1px] leading-3 h-3.5 mr-1">IMDb</Text>
                             <Text className="text-xs font-extrabold text-black">{movie.rating}</Text>
                         </View>
 

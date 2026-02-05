@@ -46,7 +46,6 @@ export function MovieCard({
                             <View className="flex-row mt-2 gap-2">
                                 {rating && (
                                     <View className="bg-yellow-400 px-1.5 py-0.5 rounded flex-row items-center">
-                                        <Text className="text-xs font-bold text-black font-mono">IMDb</Text>
                                         <Text className="text-xs font-bold text-black ml-1">{rating}</Text>
                                     </View>
                                 )}

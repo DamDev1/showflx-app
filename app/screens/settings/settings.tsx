@@ -7,8 +7,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function SettingsPage() {
     const router = useRouter();
 
-    const renderSettingItem = (icon: React.ReactNode, label: string, value?: string, showArrow = true, isDestructive = false) => (
-        <TouchableOpacity className="flex-row items-center justify-between py-4 border-b border-white/5 active:bg-white/5 px-4 -mx-4">
+    const renderSettingItem = (icon: React.ReactNode, label: string, value?: string, showArrow = true, isDestructive = false, onPress?: () => void) => (
+        <TouchableOpacity
+            className="flex-row items-center justify-between py-4 border-b border-white/5 active:bg-white/5 px-4 -mx-4"
+            onPress={onPress}
+            disabled={!onPress && !showArrow}
+        >
             <View className="flex-row items-center gap-3">
                 {icon}
                 <Text className={`text-base font-medium ${isDestructive ? 'text-red-500' : 'text-primary'}`}>
@@ -59,8 +63,8 @@ export default function SettingsPage() {
                 <View className="mb-6">
                     <Text className="text-secondary text-xs font-bold uppercase tracking-wider mb-2 ml-1">Account</Text>
                     <View className="bg-card rounded-2xl px-4 border border-white/5 overflow-hidden">
-                        {renderSettingItem(<User size={20} color="#9CA3AF" />, "Edit Profile")}
-                        {renderSettingItem(<Lock size={20} color="#9CA3AF" />, "Security")}
+                        {renderSettingItem(<User size={20} color="#9CA3AF" />, "Edit Profile", undefined, true, false, () => router.push('/screens/settings/edit-profile'))}
+                        {renderSettingItem(<Lock size={20} color="#9CA3AF" />, "Security", undefined, true, false, () => router.push('/screens/settings/security'))}
                         {renderSettingItem(<CreditCard size={20} color="#9CA3AF" />, "Payment Methods", "Visa **4242")}
                         {renderSettingItem(<Bell size={20} color="#9CA3AF" />, "Notifications")}
                     </View>

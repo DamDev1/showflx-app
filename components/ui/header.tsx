@@ -19,7 +19,10 @@ export default function Header() {
             </View>
 
             <View className="flex-row items-center gap-3">
-                <TouchableOpacity className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20">
+                <TouchableOpacity
+                    className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20"
+                    onPress={() => router.push('/screens/notifications/notifications')}
+                >
                     <Bell size={20} color="#FFFFFF" />
                 </TouchableOpacity>
 

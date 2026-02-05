@@ -42,7 +42,7 @@ export default function WelcomeScreen() {
                 animated: true,
             });
         } else {
-            router.push('/login');
+            router.push('/signup');
         }
     };
 

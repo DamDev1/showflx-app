@@ -1,15 +1,23 @@
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ChevronLeft, Eye, EyeOff, Lock, Mail } from 'lucide-react-native';
+import { ChevronLeft, Eye, EyeOff, Lock, Mail, User } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function LoginScreen() {
+export default function SignupScreen() {
     const router = useRouter();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const handleSignup = () => {
+        // Validation logic here if needed
+        router.push('/otp');
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-[#050505]">
@@ -28,14 +36,30 @@ export default function LoginScreen() {
                         </TouchableOpacity>
 
                         <Text className="text-white text-3xl font-bold tracking-tight mb-2">
-                            Login to ShowFlx
+                            Create Account
                         </Text>
                         <Text className="text-gray-400 text-base">
-                            Please enter your details.
+                            Please fill in the details below.
                         </Text>
                     </View>
 
                     <View className="gap-5">
+                        {/* Name Input */}
+                        <View className="gap-2">
+                            <Text className="text-white text-base font-medium ml-1">Full Name</Text>
+                            <View className="flex-row items-center gap-3 bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
+                                <User size={18} color="#666" />
+                                <TextInput
+                                    className="flex-1 items-center text-white text-base font-medium"
+                                    placeholder="Enter your full name"
+                                    placeholderTextColor="#666"
+                                    value={name}
+                                    onChangeText={setName}
+                                />
+                            </View>
+                        </View>
+
+                        {/* Email Input */}
                         <View className="gap-2">
                             <Text className="text-white text-base font-medium ml-1">Email</Text>
                             <View className="flex-row items-center gap-3 bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
@@ -52,6 +76,7 @@ export default function LoginScreen() {
                             </View>
                         </View>
 
+                        {/* Password Input */}
                         <View className="gap-2">
                             <Text className="text-white text-base font-medium ml-1">Password</Text>
                             <View className="flex-row items-center bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
@@ -76,39 +101,44 @@ export default function LoginScreen() {
                             </View>
                         </View>
 
-                        <TouchableOpacity className="self-start" onPress={() => router.push('/forgot-password')}>
-                            <Text className="text-gray-400 underline decoration-gray-400">
-                                Forget Password
-                            </Text>
-                        </TouchableOpacity>
+                        {/* Confirm Password Input */}
+                        <View className="gap-2">
+                            <Text className="text-white text-base font-medium ml-1">Confirm Password</Text>
+                            <View className="flex-row items-center bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
+                                <View className="flex-row items-center gap-3 flex-1">
+                                    <Lock size={20} color="#666" />
+                                    <TextInput
+                                        className="flex-1 text-white text-base font-medium"
+                                        placeholder="Confirm your password"
+                                        placeholderTextColor="#666"
+                                        value={confirmPassword}
+                                        onChangeText={setConfirmPassword}
+                                        secureTextEntry={!showConfirmPassword}
+                                    />
+                                </View>
+                                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                    {showConfirmPassword ? (
+                                        <EyeOff size={20} color="#666" />
+                                    ) : (
+                                        <Eye size={20} color="#666" />
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+                        </View>
 
                         <TouchableOpacity
-                            className="bg-white/10 py-4 rounded-full items-center active:bg-white/20 border border-white/5 mt-2"
-                            onPress={() => router.replace('/(tabs)')}
+                            className="bg-white/10 py-4 rounded-full items-center active:bg-white/20 border border-white/5 mt-4"
+                            onPress={handleSignup}
                         >
-                            <Text className="text-white text-lg font-semibold">Login</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View className="h-10" />
-
-                    <View className="gap-4">
-                        <TouchableOpacity className="flex-row items-center justify-center bg-[#1A1A1A] py-4 rounded-2xl border border-white/5 gap-3">
-                            <Text className="text-white font-bold text-lg">G</Text>
-                            <Text className="text-white font-medium text-base">Login with Google</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity className="flex-row items-center justify-center bg-[#1A1A1A] py-4 rounded-2xl border border-white/5 gap-3">
-                            <Text className="text-white font-bold text-lg"></Text>
-                            <Text className="text-white font-medium text-base">Login with Apple</Text>
+                            <Text className="text-white text-lg font-semibold">Signup</Text>
                         </TouchableOpacity>
                     </View>
 
                     <View className="flex-1 justify-end pb-8 mt-8">
                         <View className="flex-row justify-center space-x-1">
-                            <Text className="text-gray-400 text-base">New user?</Text>
-                            <TouchableOpacity onPress={() => router.push('/signup')}>
-                                <Text className="text-white font-semibold text-base">Signup</Text>
+                            <Text className="text-gray-400 text-base">Already have an account?</Text>
+                            <TouchableOpacity onPress={() => router.push('/login')}>
+                                <Text className="text-white font-semibold text-base">Login</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

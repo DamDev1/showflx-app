@@ -28,7 +28,6 @@ export default function SettingsPage() {
 
     return (
         <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-            {/* Header */}
             <View className="flex-row items-center justify-between px-4 py-3 border-b border-white/5">
                 <TouchableOpacity
                     onPress={() => router.back()}
@@ -41,7 +40,6 @@ export default function SettingsPage() {
             </View>
 
             <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-                {/* Profile Section */}
                 <View className="items-center py-8">
                     <View className="relative">
                         <Image
@@ -66,7 +64,7 @@ export default function SettingsPage() {
                         {renderSettingItem(<User size={20} color="#9CA3AF" />, "Edit Profile", undefined, true, false, () => router.push('/screens/settings/edit-profile'))}
                         {renderSettingItem(<Lock size={20} color="#9CA3AF" />, "Security", undefined, true, false, () => router.push('/screens/settings/security'))}
                         {renderSettingItem(<CreditCard size={20} color="#9CA3AF" />, "Payment Methods", "Visa **4242")}
-                        {renderSettingItem(<Bell size={20} color="#9CA3AF" />, "Notifications")}
+                        {renderSettingItem(<Bell size={20} color="#9CA3AF" />, "Notifications", undefined, true, false, () => router.push('/screens/settings/notifications'))}
                     </View>
                 </View>
 
@@ -82,7 +80,7 @@ export default function SettingsPage() {
                             </View>
                             <Switch value={true} trackColor={{ false: "#767577", true: "#fff" }} thumbColor={"#000"} />
                         </View>
-                        {renderSettingItem(<Shield size={20} color="#9CA3AF" />, "Privacy Policy")}
+                        {renderSettingItem(<Shield size={20} color="#9CA3AF" />, "Privacy Policy", undefined, true, false, () => router.push('/screens/settings/privacy-policy'))}
                     </View>
                 </View>
 
@@ -90,8 +88,8 @@ export default function SettingsPage() {
                 <View className="mb-8">
                     <Text className="text-secondary text-xs font-bold uppercase tracking-wider mb-2 ml-1">Support</Text>
                     <View className="bg-card rounded-2xl px-4 border border-white/5 overflow-hidden">
-                        {renderSettingItem(<HelpCircle size={20} color="#9CA3AF" />, "Help Center")}
-                        {renderSettingItem(<FileText size={20} color="#9CA3AF" />, "Terms of Service")}
+                        {renderSettingItem(<HelpCircle size={20} color="#9CA3AF" />, "Help Center", undefined, true, false, () => router.push('/screens/settings/help-center'))}
+                        {renderSettingItem(<FileText size={20} color="#9CA3AF" />, "Terms of Service", undefined, true, false, () => router.push('/screens/settings/terms-of-service'))}
                         <TouchableOpacity
                             className="flex-row items-center justify-between py-4 -mx-4 px-4 active:bg-red-500/10"
                             onPress={() => router.replace('/login')}

@@ -20,21 +20,21 @@ export default function SectionHeader({
     return (
         <View className="flex-row items-end justify-between mb-4 px-4">
             <View>
-                <Text className="text-xl font-bold text-black">{title}</Text>
+                <Text className="text-xl font-bold text-primary">{title}</Text>
                 {subtitle && (
-                    <Text className="text-gray-500 text-xs font-medium mt-0.5">{subtitle}</Text>
+                    <Text className="text-secondary text-xs font-medium mt-0.5">{subtitle}</Text>
                 )}
             </View>
 
             {actionLabel && (
                 <TouchableOpacity
                     onPress={onActionPress}
-                    className="flex-row items-center bg-white border border-gray-100 px-3 py-1.5 rounded-full active:bg-gray-50"
+                    className="flex-row items-center bg-white/10 border border-white/5 px-3 py-1.5 rounded-full active:bg-white/20"
                 >
-                    {icon === 'list' && <List size={14} color="#333" strokeWidth={2.5} className="mr-1.5" />}
-                    {icon === 'link' && <ExternalLink size={14} color="#333" strokeWidth={2.5} className="mr-1.5" />}
-                    <Text className="text-xs font-semibold text-gray-800">{actionLabel}</Text>
-                    {icon === 'arrow' && <ArrowRight size={14} color="#333" strokeWidth={2.5} className="ml-1.5" />}
+                    {icon === 'list' && <List size={14} color="#FFFFFF" strokeWidth={2.5} className="mr-1.5" />}
+                    {icon === 'link' && <ExternalLink size={14} color="#FFFFFF" strokeWidth={2.5} className="mr-1.5" />}
+                    <Text className="text-xs font-semibold text-primary">{actionLabel}</Text>
+                    {icon === 'arrow' && <ArrowRight size={14} color="#FFFFFF" strokeWidth={2.5} className="ml-1.5" />}
                 </TouchableOpacity>
             )}
         </View>

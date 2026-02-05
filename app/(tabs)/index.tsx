@@ -60,7 +60,7 @@ import { useRouter } from 'expo-router';
 export default function BrowsePage() {
     const router = useRouter();
     return (
-        <SafeAreaView className='flex-1 bg-white' edges={['top']}>
+        <SafeAreaView className='flex-1 bg-background' edges={['top']}>
             <View className='px-4 mb-2'>
                 <Header />
             </View>
@@ -97,7 +97,7 @@ export default function BrowsePage() {
                         data={TRENDING}
                         renderItem={({ item }) => (
                             <View className={`rounded-[26px] p-[2px] mr-3`}>
-                                <View className={`bg-white rounded-[24px]`}>
+                                <View className={`bg-card rounded-[24px]`}>
                                     <MovieCard
                                         title={item.title}
                                         imageUrl={item.imageUrl}

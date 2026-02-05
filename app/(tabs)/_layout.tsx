@@ -6,17 +6,16 @@ import { CustomTabBar } from "../../components/ui/CustomTabBar";
 export default function TabsLayout() {
     return (
         <>
-            <StatusBar backgroundColor="#fff" barStyle={"dark-content"} />
+            <StatusBar backgroundColor="#050505" barStyle={"light-content"} />
             <Tabs
                 tabBar={(props) => {
-                    // Hide tab bar on 'shorts' route for immersive experience
                     const routeName = props.state.routes[props.state.index].name;
                     if (routeName === 'shorts') return null;
                     return <CustomTabBar {...props} />;
                 }}
                 screenOptions={{
                     headerShown: false,
-                    sceneStyle: { backgroundColor: "#F8F9FA" },
+                    sceneStyle: { backgroundColor: "#050505" },
                 }}
             >
                 <Tabs.Screen

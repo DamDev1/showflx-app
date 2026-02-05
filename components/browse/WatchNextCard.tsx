@@ -17,10 +17,10 @@ interface WatchNextCardProps {
 
 export default function WatchNextCard({ movie }: WatchNextCardProps) {
     return (
-        <TouchableOpacity className="mr-5 w-[320px] h-[160px] rounded-[24px] overflow-hidden bg-gray-100 shadow-sm relative">
+        <TouchableOpacity className="mr-5 w-[320px] h-[160px] rounded-[24px] overflow-hidden bg-card shadow-sm relative">
             {/* Background subtle gradient for depth */}
             <LinearGradient
-                colors={['#f3f4f6', '#e5e7eb']}
+                colors={['#27272a', '#18181b']}
                 className="absolute inset-0"
             />
 
@@ -36,10 +36,10 @@ export default function WatchNextCard({ movie }: WatchNextCardProps) {
 
                 {/* Right: Info */}
                 <View className="flex-1 ml-4 justify-center">
-                    <Text className="text-lg font-bold text-black mb-1" numberOfLines={1}>
+                    <Text className="text-lg font-bold text-primary mb-1" numberOfLines={1}>
                         {movie.title}
                     </Text>
-                    <Text className="text-gray-500 text-xs font-medium mb-3">
+                    <Text className="text-secondary text-xs font-medium mb-3">
                         {movie.year} • {movie.duration}
                     </Text>
 
@@ -50,8 +50,8 @@ export default function WatchNextCard({ movie }: WatchNextCardProps) {
                         </View>
 
                         {movie.genres.slice(0, 2).map((genre) => (
-                            <View key={genre} className="bg-white px-2.5 py-1 rounded-lg border border-gray-100 shadow-sm">
-                                <Text className="text-xs font-medium text-gray-600">{genre}</Text>
+                            <View key={genre} className="bg-white/10 px-2.5 py-1 rounded-lg border border-white/5 shadow-sm">
+                                <Text className="text-xs font-medium text-gray-300">{genre}</Text>
                             </View>
                         ))}
                     </View>

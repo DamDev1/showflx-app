@@ -152,7 +152,7 @@ export default function ShortsPage() {
     }).current;
 
     return (
-        <View className="flex-1 bg-black">
+        <View className="flex-1 bg-background">
             <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
             <FlatList
                 data={SHORTS}

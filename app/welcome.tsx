@@ -60,15 +60,12 @@ export default function WelcomeScreen() {
 
     const renderItem = ({ item }: { item: SlideItem }) => (
         <View style={{ width: width, alignItems: 'center', paddingHorizontal: 24, paddingTop: 24 }}>
-            {/* Hero Image Container */}
             <View className="w-full aspect-[4/3] rounded-[32px] overflow-hidden border border-white/10 relative shadow-2xl shadow-primary/20 bg-gray-900">
                 <Image
                     source={{ uri: item.image }}
                     className="w-full h-full"
                     resizeMode="cover"
                 />
-
-                {/* Fake Player Overlay elements to match reference */}
                 <LinearGradient
                     colors={['transparent', 'rgba(0,0,0,0.6)']}
                     className="absolute bottom-0 left-0 right-0 h-24 justify-end pb-4 px-4"
@@ -84,11 +81,11 @@ export default function WelcomeScreen() {
 
             {/* Text Content */}
             <View className="mt-12 items-center w-full">
-                <Text className="text-white text-4xl font-bold text-center leading-tight">
+                <Text className="text-primary text-4xl font-bold text-center leading-tight">
                     {item.title}
                 </Text>
 
-                <Text className="text-gray-400 text-center mt-4 text-base px-2 leading-6">
+                <Text className="text-secondary text-center mt-4 text-base px-2 leading-6">
                     {item.subtitle}
                 </Text>
             </View>
@@ -96,17 +93,16 @@ export default function WelcomeScreen() {
     );
 
     return (
-        <SafeAreaView className="flex-1 bg-[#050505]">
-            <StatusBar barStyle="light-content" backgroundColor="#050505" />
+        <SafeAreaView className="flex-1 bg-background">
+            <StatusBar barStyle="default" />
 
-            {/* Header / Logo */}
             <View className="items-center py-4">
                 <View className="flex-row items-center gap-2">
                     {/* Simple Logo Placeholder */}
-                    <View className="w-6 h-6 rounded-full border-2 border-white items-center justify-center">
-                        <View className="w-2 h-2 bg-white rounded-full" />
+                    <View className="w-6 h-6 rounded-full border-2 border-primary items-center justify-center">
+                        <View className="w-2 h-2 bg-primary rounded-full" />
                     </View>
-                    <Text className="text-white text-xl font-bold tracking-wider">ShowFlx</Text>
+                    <Text className="text-primary text-xl font-bold tracking-wider">ShowFlx</Text>
                 </View>
             </View>
 
@@ -131,7 +127,7 @@ export default function WelcomeScreen() {
                         {SLIDES.map((_, index) => (
                             <View
                                 key={index}
-                                className={`h-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'}`}
+                                className={`h-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-8 bg-primary' : 'w-2 bg-primary/20'}`}
                             />
                         ))}
                     </View>
@@ -141,14 +137,14 @@ export default function WelcomeScreen() {
             {/* Footer Actions */}
             <View className="flex-row items-center justify-between px-8 pb-8 pt-4">
                 <TouchableOpacity onPress={handleLogin}>
-                    <Text className="text-white font-semibold text-lg">Login</Text>
+                    <Text className="text-primary font-semibold text-lg">Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={handleNext}
-                    className="bg-white/10 py-4 px-12 rounded-full border border-white/10"
+                    className="bg-primary/10 py-4 px-12 rounded-full border border-primary/10"
                 >
-                    <Text className="text-white font-semibold text-lg">
+                    <Text className="text-primary font-semibold text-lg">
                         {currentIndex === SLIDES.length - 1 ? 'Get Started' : 'Next'}
                     </Text>
                 </TouchableOpacity>

@@ -50,7 +50,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                 <View style={styles.iconContainer}>
                     {options.tabBarIcon?.({
                         focused: isFocused,
-                        color: isFocused ? '#000000' : '#666666',
+                        color: isFocused ? '#FFFFFF' : '#9CA3AF',
                         size: 23,
                     })}
                 </View>
@@ -59,7 +59,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                         ? label
                         : label({
                             focused: isFocused,
-                            color: isFocused ? '#000000' : '#666666',
+                            color: isFocused ? '#FFFFFF' : '#9CA3AF',
                             position: 'below-icon',
                             children: options.title ?? route.name,
                         })}
@@ -112,7 +112,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
             >
                 {options.tabBarIcon?.({
                     focused: isFocused,
-                    color: '#FFFFFF',
+                    color: '#000000',
                     size: 20,
                 })}
                 <Text style={styles.searchLabel}>
@@ -120,7 +120,7 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                         ? label
                         : label({
                             focused: isFocused,
-                            color: '#FFFFFF',
+                            color: '#000000',
                             position: 'below-icon',
                             children: options.title ?? searchTab.name,
                         })}
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     tabBar: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        backgroundColor: 'rgba(39, 39, 42, 0.95)', // Dark card color
         borderRadius: 24,
         paddingVertical: 8,
         paddingHorizontal: 12,
@@ -164,11 +164,13 @@ const styles = StyleSheet.create({
             width: 0,
             height: 4,
         },
-        shadowOpacity: 0.15,
+        shadowOpacity: 0.3,
         shadowRadius: 12,
         elevation: 8,
         backdropFilter: 'blur(10px)',
         gap: 8,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.1)',
     },
     tab: {
         flex: 1,
@@ -185,15 +187,15 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 11,
         fontWeight: '500',
-        color: '#666666',
+        color: '#9CA3AF',
         textAlign: 'center',
     },
     labelFocused: {
-        color: '#000000',
+        color: '#FFFFFF',
         fontWeight: '600',
     },
     searchButton: {
-        backgroundColor: '#1A1A1A',
+        backgroundColor: '#FFFFFF',
         paddingVertical: 13,
         borderRadius: 16,
         flexDirection: 'column',
@@ -213,6 +215,6 @@ const styles = StyleSheet.create({
     searchLabel: {
         fontSize: 13,
         fontWeight: '500',
-        color: '#FFFFFF',
+        color: '#000000',
     },
 });

@@ -9,22 +9,22 @@ export default function Header() {
             <View className="flex-row items-center gap-3">
                 <Image
                     source={{ uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&auto=format&fit=crop&q=60' }}
-                    className="w-10 h-10 rounded-full bg-gray-200"
+                    className="w-10 h-10 rounded-full bg-white/20"
                 />
                 <View>
-                    <Text className="text-base font-bold text-black leading-tight">Tyrese</Text>
-                    <Text className="text-xs text-gray-500 font-medium">Free plan</Text>
+                    <Text className="text-base font-bold text-primary leading-tight">Tyrese</Text>
+                    <Text className="text-xs text-secondary font-medium">Free plan</Text>
                 </View>
             </View>
 
             {/* Right: Actions */}
             <View className="flex-row items-center gap-3">
-                <TouchableOpacity className="w-10 h-10 rounded-full bg-white items-center justify-center border border-gray-100 shadow-sm active:bg-gray-50">
-                    <Bell size={20} color="#333" />
+                <TouchableOpacity className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20">
+                    <Bell size={20} color="#FFFFFF" />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="w-10 h-10 rounded-full bg-white items-center justify-center border border-gray-100 shadow-sm active:bg-gray-50">
-                    <Menu size={20} color="#333" />
+                <TouchableOpacity className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20">
+                    <Menu size={20} color="#FFFFFF" />
                 </TouchableOpacity>
             </View>
         </View>

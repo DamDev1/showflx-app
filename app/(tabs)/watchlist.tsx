@@ -17,12 +17,12 @@ export default function WatchlistScreen() {
                 <View className="flex-row items-center justify-between mb-6">
                     <Text className="text-2xl font-bold text-primary">My watchlist</Text>
 
-                    <View className="flex-row bg-gray-100 rounded-lg p-1">
-                        <TouchableOpacity className="p-2 bg-white rounded-md shadow-sm">
-                            <Grid size={20} color="#1A1A1A" />
+                    <View className="flex-row bg-white/5 rounded-lg p-1">
+                        <TouchableOpacity className="p-2 bg-white/20 rounded-md shadow-sm">
+                            <Grid size={20} color="#FFFFFF" />
                         </TouchableOpacity>
                         <TouchableOpacity className="p-2">
-                            <List size={20} color="#8E8E93" />
+                            <List size={20} color="#9CA3AF" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -36,7 +36,7 @@ export default function WatchlistScreen() {
                             <Text className="text-secondary text-sm">Custom order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Search size={20} color="#1A1A1A" />
+                            <Search size={20} color="#FFFFFF" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -50,7 +50,7 @@ export default function WatchlistScreen() {
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 renderItem={({ item }) => (
                     <TouchableOpacity className="mb-6 w-[48%]">
-                        <View className="aspect-[2/3] w-full rounded-2xl overflow-hidden bg-gray-200 mb-2">
+                        <View className="aspect-[2/3] w-full rounded-2xl overflow-hidden bg-card mb-2">
                             <Image source={{ uri: item.imageUrl }} className="w-full h-full" resizeMode="cover" />
                             {item.year === '2024' && (
                                 <View className="absolute bottom-2 left-2 bg-white/90 px-2 py-0.5 rounded text-xs">

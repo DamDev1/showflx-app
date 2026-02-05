@@ -7,10 +7,10 @@ interface SearchBarProps extends TextInputProps {
 
 export function SearchBar({ containerClassName, ...props }: SearchBarProps) {
     return (
-        <View className={`flex-row items-center bg-gray-200 rounded-xl px-4 py-3 border border-gray-300 ${containerClassName}`}>
+        <View className={`flex-row items-center bg-white dark:bg-card rounded-xl px-4 py-3 border border-border ${containerClassName}`}>
             <Search size={20} color="#9CA3AF" />
             <TextInput
-                className="flex-1 ml-3 text-black"
+                className="flex-1 ml-3 text-primary"
                 placeholderTextColor="#9CA3AF"
                 {...props}
             />

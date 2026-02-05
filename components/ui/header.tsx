@@ -1,11 +1,12 @@
+import { useRouter } from 'expo-router';
 import { Bell, Menu } from 'lucide-react-native';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Header() {
+    const router = useRouter();
     return (
         <View className="flex-row items-center justify-between py-2">
-            {/* Left: Avatar + Info */}
             <View className="flex-row items-center gap-3">
                 <Image
                     source={{ uri: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&auto=format&fit=crop&q=60' }}
@@ -17,13 +18,15 @@ export default function Header() {
                 </View>
             </View>
 
-            {/* Right: Actions */}
             <View className="flex-row items-center gap-3">
                 <TouchableOpacity className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20">
                     <Bell size={20} color="#FFFFFF" />
                 </TouchableOpacity>
 
-                <TouchableOpacity className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20">
+                <TouchableOpacity
+                    className="w-10 h-10 rounded-full bg-white/10 items-center justify-center border border-white/5 shadow-sm active:bg-white/20"
+                    onPress={() => router.push('/screens/settings/settings')}
+                >
                     <Menu size={20} color="#FFFFFF" />
                 </TouchableOpacity>
             </View>

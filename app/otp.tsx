@@ -17,6 +17,7 @@ export default function OTPScreen() {
     const [resendOtp, { isLoading: resendOtpLoading }] = useResendOtpMutation();
     const handleError = useErrorHandler()
     const [count, setCount] = useState(60);
+
     const handleVerify = async () => {
         try {
             if (otp.length === 4) {
@@ -118,7 +119,7 @@ export default function OTPScreen() {
                                 <ActivityIndicator color="white" />
                             ) : (
                                 <TouchableOpacity onPress={handleResendOtp}>
-                                    <Text className="text-white font-semibold text-base">{count > 0 ? `${count} seconds` : 'Resend'}</Text>
+                                    <Text className="text-white font-semibold text-base">Resend</Text>
                                 </TouchableOpacity>
                             )}
                         </View>

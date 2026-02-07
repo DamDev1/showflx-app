@@ -4,11 +4,12 @@ import { ArrowLeft, Bell, ChevronRight, CreditCard, FileText, Globe, HelpCircle,
 import React from 'react';
 import { Image, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SettingsPage() {
     const router = useRouter();
     const dispatch = useDispatch();
+    const { userInfo } = useSelector((state: any) => state.auth);
 
     const handleLogout = () => {
         dispatch(logout());
@@ -58,11 +59,17 @@ export default function SettingsPage() {
                             <User size={14} color="white" />
                         </View>
                     </View>
-                    <Text className="text-xl font-bold text-primary mt-4">Tyrese</Text>
-                    <Text className="text-secondary">tyrese@example.com</Text>
-                    <View className="mt-4 px-4 py-1.5 rounded-full bg-yellow-400/20 border border-yellow-400/50">
-                        <Text className="text-yellow-400 text-xs font-bold uppercase tracking-wider">Premium Member</Text>
-                    </View>
+                    <Text className="text-xl font-bold text-primary mt-4">{userInfo?.fullName}</Text>
+                    <Text className="text-secondary">{userInfo?.email}</Text>
+                    {userInfo?.subscriptionStatus === "free" ? (
+                        <View className="mt-4 px-4 py-1.5 rounded-full bg-blue-400/20 border border-blue-400/50">
+                              <Text className="text-blue-400 text-xs font-bold uppercase tracking-wider">{userInfo?.subscriptionStatus}</Text>
+                        </View>
+                    ) : (
+                        <View className="mt-4 px-4 py-1.5 rounded-full bg-yellow-400/20 border border-yellow-400/50">
+                            <Text className="text-yellow-400 text-xs font-bold uppercase tracking-wider">{userInfo?.subscriptionStatus}</Text>
+                        </View>
+                    )}
                 </View>
 
                 <View className="mb-6">

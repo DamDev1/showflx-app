@@ -1,10 +1,13 @@
+import { RootState } from '@/store/store';
 import { useRouter } from 'expo-router';
 import { Bell, Menu } from 'lucide-react-native';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function Header() {
     const router = useRouter();
+    const userInfo = useSelector((state:any) => state.auth.userInfo);
     return (
         <View className="flex-row items-center justify-between py-2">
             <View className="flex-row items-center gap-3">
@@ -13,8 +16,8 @@ export default function Header() {
                     className="w-10 h-10 rounded-full bg-white/20"
                 />
                 <View>
-                    <Text className="text-base font-bold text-primary leading-tight">Tyrese</Text>
-                    <Text className="text-xs text-secondary font-medium">Free plan</Text>
+                    <Text className="text-base font-bold text-primary leading-tight">{userInfo?.fullName}</Text>
+                    <Text className="text-xs text-secondary font-medium capitalize">{userInfo?.subscriptionStatus} plan</Text>
                 </View>
             </View>
 

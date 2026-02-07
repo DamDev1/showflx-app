@@ -2,20 +2,31 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useErrorHandler } from './hooks/useErrorHandler';
+import { useVerifyOtpMutation } from '@/slices/userApiSlice';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function OTPScreen() {
     const router = useRouter();
+    const params = useLocalSearchParams();
+    const { email } = params;
     const [otp, setOtp] = useState('');
+    const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+    const handleError = useErrorHandler()
 
-    const handleVerify = () => {
-        // Validation logic
-        if (otp.length === 4) {
-            router.push('/success');
+    const handleVerify = async () => {
+        console.log(otp)
+        try {
+            if (otp.length === 4) {
+                await verifyOtp({ otp, email }).unwrap();
+                router.push('/success');
+            }
+        } catch (error) {
+            handleError(error)
         }
     };
-
     return (
         <SafeAreaView className="flex-1 bg-[#050505]">
             <StatusBar style="light" />
@@ -47,10 +58,10 @@ export default function OTPScreen() {
                                 <View
                                     key={index}
                                     className={`w-[70px] h-[70px] rounded-2xl items-center justify-center border ${otp.length === index
-                                            ? 'border-primary bg-primary/10'
-                                            : otp.length > index
-                                                ? 'border-white/20 bg-[#1A1A1A]'
-                                                : 'border-white/10 bg-[#1A1A1A]'
+                                        ? 'border-primary bg-primary/10'
+                                        : otp.length > index
+                                            ? 'border-white/20 bg-[#1A1A1A]'
+                                            : 'border-white/10 bg-[#1A1A1A]'
                                         }`}
                                 >
                                     <Text className="text-white text-2xl font-bold">
@@ -77,7 +88,11 @@ export default function OTPScreen() {
                             className="bg-white/10 py-4 rounded-full items-center active:bg-white/20 border border-white/5"
                             onPress={handleVerify}
                         >
-                            <Text className="text-white text-lg font-semibold">Verify</Text>
+                            {isLoading ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <Text className="text-white text-lg font-semibold">Verify</Text>
+                            )}
                         </TouchableOpacity>
 
                         <View className="flex-row justify-center mt-6">

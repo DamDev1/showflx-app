@@ -9,7 +9,7 @@ export default function SuccessScreen() {
     const router = useRouter();
 
     const handleContinue = () => {
-        router.replace('/(tabs)');
+        router.replace('/login');
     };
 
     return (

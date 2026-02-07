@@ -21,7 +21,6 @@ export default function LoginScreen() {
     const dispatch = useDispatch()
 
     const handleLogin = async () => {
-        console.log(email, password);
         try {
             const res = await login({ email, password }).unwrap();
             dispatch(setCredentials({
@@ -41,7 +40,12 @@ export default function LoginScreen() {
         } catch (error: any) {
             handleError(error);
             if (error.data?.message === 'Please verify your email first' || error.data?.message?.message === 'Please verify your email first') {
-                router.replace(`/otp`);
+                router.push({
+                    pathname: '/otp',
+                    params: {
+                        email: email
+                    }
+                });
             }
         }
     };

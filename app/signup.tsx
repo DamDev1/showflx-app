@@ -1,9 +1,11 @@
+import { useSignupMutation } from '@/slices/userApiSlice';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronLeft, Eye, EyeOff, Lock, Mail, User } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useErrorHandler } from './hooks/useErrorHandler';
 
 export default function SignupScreen() {
     const router = useRouter();
@@ -14,9 +16,27 @@ export default function SignupScreen() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSignup = () => {
-        // Validation logic here if needed
-        router.push('/otp');
+
+    const handleError = useErrorHandler()
+
+    const [signup, { isLoading }] = useSignupMutation();
+
+    const handleSignup = async () => {
+        if (password !== confirmPassword) {
+            handleError("Passwords do not match")
+            return
+        }
+        try {
+            await signup({ fullName: name, email, password }).unwrap();
+            router.push({
+                pathname: '/otp',
+                params: {
+                    email: email
+                }
+            });
+        } catch (error) {
+           handleError(error)
+        }
     };
 
     return (
@@ -130,7 +150,11 @@ export default function SignupScreen() {
                             className="bg-white/10 py-4 rounded-full items-center active:bg-white/20 border border-white/5 mt-4"
                             onPress={handleSignup}
                         >
-                            <Text className="text-white text-lg font-semibold">Signup</Text>
+                            {isLoading ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <Text className="text-white text-lg font-semibold">Signup</Text>
+                            )}
                         </TouchableOpacity>
                     </View>
 

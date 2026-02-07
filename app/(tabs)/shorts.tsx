@@ -1,9 +1,11 @@
+import { useShortListMoviesQuery } from '@/slices/movieApiSlice';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { ArrowLeft, Heart, MessageCircle, MoreHorizontal, Play, Share2 } from 'lucide-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 
 const SHORTS = [
     {
@@ -41,6 +43,7 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
     const router = useRouter();
     const [isPlaying, setIsPlaying] = useState(isActive);
     const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         if (isActive) {
@@ -142,6 +145,7 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
 
 export default function ShortsPage() {
     const bottomTabHeight = useBottomTabBarHeight();
+    const handlerError = useErrorHandler()
     const router = useRouter();
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -151,11 +155,25 @@ export default function ShortsPage() {
         }
     }).current;
 
+    const { data: shorts, error } = useShortListMoviesQuery({});
+
+    const shortVideos = shorts?.shorts;
+
+    console.log(shortVideos);
+
+    console.log(error);
+
+    useEffect(() => {
+        if (error) {
+            handlerError(error)
+        }
+    }, [error]);
+
     return (
         <View className="flex-1 bg-background">
             <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
             <FlatList
-                data={SHORTS}
+                data={shortVideos}
                 renderItem={({ item, index }) => (
                     <ShortItem
                         item={item}

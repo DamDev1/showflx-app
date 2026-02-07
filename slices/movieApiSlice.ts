@@ -23,7 +23,11 @@ export const movieApiSlice = apiSlice.injectEndpoints({
         getTrendingMovies: builder.query<Movie[], void>({
             query: () => '/movies/trending',
         }),
+
+        shortListMovies: builder.query({
+            query: () => '/user/shorts',
+        }),
     }),
 });
 
-export const { useSearchMoviesQuery, useGetTrendingMoviesQuery } = movieApiSlice;
+export const { useSearchMoviesQuery, useGetTrendingMoviesQuery, useShortListMoviesQuery } = movieApiSlice;

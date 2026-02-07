@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { logout } from "./authUtils";
 
 
@@ -7,7 +8,7 @@ export const getErrorMessage = (error: any): string => {
     if (error.status === 401) {
         if (error.data.message.message === "Invalid Token") {
             logout();
-            // Redirect or handle navigation if needed, but avoid window.location.reload()
+            router.replace('/login');
         }
     }
 

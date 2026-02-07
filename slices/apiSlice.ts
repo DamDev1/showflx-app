@@ -12,15 +12,15 @@ interface ErrorResponse {
 }
 
 const getAuthToken = async (): Promise<Token | null> => {
-  try {
-    const storedToken = await AsyncStorage.getItem('showflx-auth');
-    if (!storedToken) return null;
+    try {
+        const storedToken = await AsyncStorage.getItem('showflx-auth');
+        if (!storedToken) return null;
 
-    const parsedToken = JSON.parse(storedToken);
-    return parsedToken ? { accessToken: parsedToken.token, refreshToken: parsedToken.refreshToken } : null;
-  } catch {
-    return null;
-  }
+        const parsedToken = JSON.parse(storedToken);
+        return parsedToken ? { accessToken: parsedToken.token, refreshToken: parsedToken.refreshToken } : null;
+    } catch {
+        return null;
+    }
 };
 
 const baseQuery = fetchBaseQuery({
@@ -53,6 +53,6 @@ const baseQueryWithAuth: BaseQueryFn = async (args, api, extraOptions) => {
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: baseQueryWithAuth,
-    tagTypes: ['user', 'producer', 'admin'],
+    tagTypes: ['user', 'producer', 'admin', 'Shorts'],
     endpoints: () => ({}),
 });

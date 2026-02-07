@@ -1,4 +1,4 @@
-import { useShortListMoviesQuery } from '@/slices/movieApiSlice';
+import { Short, useShortListMoviesQuery } from '@/slices/movieApiSlice';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
@@ -7,36 +7,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { useErrorHandler } from '../hooks/useErrorHandler';
 
-const SHORTS = [
-    {
-        id: '1',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-        title: 'Cinematic Masterpiece',
-        user: 'DirectorCut',
-        likes: '1.2M',
-        comments: '4K',
-    },
-    {
-        id: '2',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-        title: 'Animation Magic',
-        user: 'BlenderStudio',
-        likes: '850K',
-        comments: '2.1K',
-    },
-    {
-        id: '3',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-        title: 'Action Sequence',
-        user: 'MovieBuff',
-        likes: '2.5M',
-        comments: '10K',
-    }
-];
-
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], isActive: boolean, bottomInset: number }) {
+function ShortItem({ item, isActive, bottomInset }: { item: Short, isActive: boolean, bottomInset: number }) {
     const player = useVideoPlayer(item.videoUrl, player => {
         player.loop = true;
     });
@@ -128,12 +101,12 @@ function ShortItem({ item, isActive, bottomInset }: { item: typeof SHORTS[0], is
             </View>
 
             <View className="absolute bottom-8 left-4 right-16">
-                <Text className="text-white font-bold text-lg mb-1">@{item.user}</Text>
-                <Text className="text-white/90 text-sm leading-5">{item.title} #movie #cinema #shorts</Text>
+                <Text className="text-white font-bold text-lg mb-1">@{item.title}</Text>
+                <Text className="text-white/90 text-sm leading-5">{item.movieTitle} #movie #cinema #shorts</Text>
 
                 <TouchableOpacity
                     className="flex-row items-center mt-3 bg-white/20 self-start px-3 py-1.5 rounded-full backdrop-blur-sm"
-                    onPress={() => { player.pause(); router.push('/movie/1') }}
+                    onPress={() => { player.pause(); router.push(`/movie/${item.movieId}`) }}
                 >
                     <Play size={12} color="white" fill="white" className="mr-2" />
                     <Text className="text-white text-xs font-bold">Watch Now</Text>
@@ -155,13 +128,9 @@ export default function ShortsPage() {
         }
     }).current;
 
-    const { data: shorts, error } = useShortListMoviesQuery({});
+    const { data: shorts, error } = useShortListMoviesQuery();
 
     const shortVideos = shorts?.shorts;
-
-    console.log(shortVideos);
-
-    console.log(error);
 
     useEffect(() => {
         if (error) {
@@ -179,6 +148,7 @@ export default function ShortsPage() {
                         item={item}
                         isActive={index === activeIndex}
                         bottomInset={0}
+                        key={index}
                     />
                 )}
                 keyExtractor={item => item.id}

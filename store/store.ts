@@ -12,3 +12,5 @@ export const makeStore = () => {
             getDefaultMiddleware().concat(apiSlice.middleware),
     });
 };
+
+export type RootState = ReturnType<typeof makeStore>;

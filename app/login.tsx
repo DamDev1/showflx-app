@@ -1,4 +1,3 @@
-import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { setCredentials } from '@/slices/authSlice';
 import { useLoginMutation } from '@/slices/userApiSlice';
 import { useRouter } from 'expo-router';
@@ -9,6 +8,7 @@ import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, Te
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
+import { useErrorHandler } from './hooks/useErrorHandler';
 
 export default function LoginScreen() {
     const router = useRouter();
@@ -30,20 +30,18 @@ export default function LoginScreen() {
                 refreshToken: res.refreshToken
             }));
 
-            console.log(res);
-
             Toast.show({
                 type: 'success',
                 text1: 'Welcome back!',
                 text2: 'You have successfully logged in.',
             });
 
-            router.push('/(tabs)');
+            router.replace('/(tabs)');
 
         } catch (error: any) {
             handleError(error);
             if (error.data?.message === 'Please verify your email first' || error.data?.message?.message === 'Please verify your email first') {
-                router.push(`/otp`);
+                router.replace(`/otp`);
             }
         }
     };

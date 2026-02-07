@@ -1,11 +1,19 @@
+import { logout } from '@/slices/authSlice';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Bell, ChevronRight, CreditCard, FileText, Globe, HelpCircle, Lock, LogOut, Moon, Shield, User } from 'lucide-react-native';
 import React from 'react';
 import { Image, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 
 export default function SettingsPage() {
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        router.replace('/login');
+    };
 
     const renderSettingItem = (icon: React.ReactNode, label: string, value?: string, showArrow = true, isDestructive = false, onPress?: () => void) => (
         <TouchableOpacity
@@ -89,7 +97,7 @@ export default function SettingsPage() {
                         {renderSettingItem(<FileText size={20} color="#9CA3AF" />, "Terms of Service", undefined, true, false, () => router.push('/screens/settings/terms-of-service'))}
                         <TouchableOpacity
                             className="flex-row items-center justify-between py-4 -mx-4 px-4 active:bg-red-500/10"
-                            onPress={() => router.replace('/login')}
+                            onPress={handleLogout}
                         >
                             <View className="flex-row items-center gap-3">
                                 <LogOut size={20} color="#EF4444" />

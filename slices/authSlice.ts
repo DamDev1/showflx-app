@@ -23,12 +23,14 @@ const initialState: AuthState = {
     isLoading: true,
 };
 
+// ... imports
+
 export const loadUser = createAsyncThunk('auth/loadUser', async () => {
     try {
         const stored = await AsyncStorage.getItem('showflx-auth');
-        return stored ? JSON.parse(stored) : { userInfo: null, token: null, refreshToken: null };
+        return stored ? JSON.parse(stored) : null;
     } catch (e) {
-        return { userInfo: null, token: null, refreshToken: null };
+        return null;
     }
 });
 

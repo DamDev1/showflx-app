@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BaseQueryFn, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface Token {
@@ -10,12 +11,24 @@ interface ErrorResponse {
     data: { message: string };
 }
 
+const getAuthToken = async (): Promise<Token | null> => {
+  try {
+    const storedToken = await AsyncStorage.getItem('showflx-auth');
+    if (!storedToken) return null;
+
+    const parsedToken = JSON.parse(storedToken);
+    return parsedToken ? { accessToken: parsedToken.token, refreshToken: parsedToken.refreshToken } : null;
+  } catch {
+    return null;
+  }
+};
+
 const baseQuery = fetchBaseQuery({
     baseUrl: "http://172.20.10.3:3000/api",
-    prepareHeaders: (headers, { getState }) => {
-        const token = (getState() as any).auth.token;
+    prepareHeaders: async (headers) => {
+        const token = await getAuthToken();
         if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
+            headers.set('Authorization', `Bearer ${token.accessToken}`);
         }
         headers.set('x-request-source', 'mobile');
         return headers;

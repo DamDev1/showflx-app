@@ -58,7 +58,7 @@ export default function SignupScreen() {
                         <Text className="text-white text-3xl font-bold tracking-tight mb-2">
                             Create Account
                         </Text>
-                        <Text className="text-gray-400 text-base">
+                        <Text className="text-gray-400 ">
                             Please fill in the details below.
                         </Text>
                     </View>
@@ -66,11 +66,11 @@ export default function SignupScreen() {
                     <View className="gap-5">
                         {/* Name Input */}
                         <View className="gap-2">
-                            <Text className="text-white text-base font-medium ml-1">Full Name</Text>
+                            <Text className="text-white  font-medium ml-1">Full Name</Text>
                             <View className="flex-row items-center gap-3 bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
                                 <User size={18} color="#666" />
                                 <TextInput
-                                    className="flex-1 items-center text-white text-base font-medium"
+                                    className="flex-1 items-center text-white  font-medium"
                                     placeholder="Enter your full name"
                                     placeholderTextColor="#666"
                                     value={name}
@@ -81,11 +81,11 @@ export default function SignupScreen() {
 
                         {/* Email Input */}
                         <View className="gap-2">
-                            <Text className="text-white text-base font-medium ml-1">Email</Text>
+                            <Text className="text-white  font-medium ml-1">Email</Text>
                             <View className="flex-row items-center gap-3 bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
                                 <Mail size={18} color="#666" />
                                 <TextInput
-                                    className="flex-1 items-center text-white text-base font-medium"
+                                    className="flex-1 items-center text-white  font-medium"
                                     placeholder="Enter your email"
                                     placeholderTextColor="#666"
                                     value={email}
@@ -98,12 +98,12 @@ export default function SignupScreen() {
 
                         {/* Password Input */}
                         <View className="gap-2">
-                            <Text className="text-white text-base font-medium ml-1">Password</Text>
+                            <Text className="text-white  font-medium ml-1">Password</Text>
                             <View className="flex-row items-center bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
                                 <View className="flex-row items-center gap-3 flex-1">
                                     <Lock size={20} color="#666" />
                                     <TextInput
-                                        className="flex-1 text-white text-base font-medium"
+                                        className="flex-1 text-white  font-medium"
                                         placeholder="Enter your password"
                                         placeholderTextColor="#666"
                                         value={password}
@@ -123,12 +123,12 @@ export default function SignupScreen() {
 
                         {/* Confirm Password Input */}
                         <View className="gap-2">
-                            <Text className="text-white text-base font-medium ml-1">Confirm Password</Text>
+                            <Text className="text-white  font-medium ml-1">Confirm Password</Text>
                             <View className="flex-row items-center bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
                                 <View className="flex-row items-center gap-3 flex-1">
                                     <Lock size={20} color="#666" />
                                     <TextInput
-                                        className="flex-1 text-white text-base font-medium"
+                                        className="flex-1 text-white  font-medium"
                                         placeholder="Confirm your password"
                                         placeholderTextColor="#666"
                                         value={confirmPassword}
@@ -160,9 +160,9 @@ export default function SignupScreen() {
 
                     <View className="flex-1 justify-end pb-8 mt-8">
                         <View className="flex-row justify-center space-x-1">
-                            <Text className="text-gray-400 text-base">Already have an account?</Text>
+                            <Text className="text-gray-400 ">Already have an account?</Text>
                             <TouchableOpacity onPress={() => router.push('/login')}>
-                                <Text className="text-white font-semibold text-base">Login</Text>
+                                <Text className="text-white font-semibold ">Login</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

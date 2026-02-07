@@ -76,11 +76,11 @@ export default function LoginScreen() {
 
                     <View className="gap-5">
                         <View className="gap-2">
-                            <Text className="text-white text-base font-medium ml-1">Email</Text>
+                            <Text className="text-white font-medium ml-1">Email</Text>
                             <View className="flex-row items-center gap-3 bg-[#1A1A1A] rounded-2xl px-4 py-4 border border-white/5 focus:border-primary/50">
                                 <Mail size={18} color="#666" />
                                 <TextInput
-                                    className="flex-1 items-center text-white text-base font-medium"
+                                    className="flex-1 items-center text-white font-medium"
                                     placeholder="Enter your email"
                                     placeholderTextColor="#666"
                                     value={email}
@@ -97,7 +97,7 @@ export default function LoginScreen() {
                                 <View className="flex-row items-center gap-3 flex-1">
                                     <Lock size={20} color="#666" />
                                     <TextInput
-                                        className="flex-1 text-white text-base font-medium"
+                                        className="flex-1 text-white font-medium"
                                         placeholder="Enter your password"
                                         placeholderTextColor="#666"
                                         value={password}

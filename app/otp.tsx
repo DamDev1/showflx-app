@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronLeft } from 'lucide-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useErrorHandler } from './hooks/useErrorHandler';
-import { useVerifyOtpMutation } from '@/slices/userApiSlice';
+import { useResendOtpMutation, useVerifyOtpMutation } from '@/slices/userApiSlice';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function OTPScreen() {
@@ -14,10 +14,10 @@ export default function OTPScreen() {
     const { email } = params;
     const [otp, setOtp] = useState('');
     const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+    const [resendOtp, { isLoading: resendOtpLoading }] = useResendOtpMutation();
     const handleError = useErrorHandler()
-
+    const [count, setCount] = useState(60);
     const handleVerify = async () => {
-        console.log(otp)
         try {
             if (otp.length === 4) {
                 await verifyOtp({ otp, email }).unwrap();
@@ -27,6 +27,23 @@ export default function OTPScreen() {
             handleError(error)
         }
     };
+
+    const handleResendOtp = async () => {
+        try {
+            await resendOtp({ email }).unwrap();
+        } catch (error) {
+            handleError(error)
+        }
+    };
+
+    const countDown = () => {
+        setTimeout(() => {
+            setCount(count - 1)
+        }, 1000)
+    }
+    useEffect(() => {
+        countDown()
+    }, [])
     return (
         <SafeAreaView className="flex-1 bg-[#050505]">
             <StatusBar style="light" />
@@ -97,9 +114,13 @@ export default function OTPScreen() {
 
                         <View className="flex-row justify-center mt-6">
                             <Text className="text-gray-400 text-base">Didn't receive code? </Text>
-                            <TouchableOpacity>
-                                <Text className="text-white font-semibold text-base">Resend</Text>
-                            </TouchableOpacity>
+                            {resendOtpLoading  ? (
+                                <ActivityIndicator color="white" />
+                            ) : (
+                                <TouchableOpacity onPress={handleResendOtp}>
+                                    <Text className="text-white font-semibold text-base">{count > 0 ? `${count} seconds` : 'Resend'}</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
                     </View>
                 </ScrollView>

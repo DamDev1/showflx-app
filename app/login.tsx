@@ -1,15 +1,52 @@
+import { useErrorHandler } from '@/hooks/useErrorHandler';
+import { setCredentials } from '@/slices/authSlice';
+import { useLoginMutation } from '@/slices/userApiSlice';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ChevronLeft, Eye, EyeOff, Lock, Mail } from 'lucide-react-native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 
 export default function LoginScreen() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [login, { isLoading }] = useLoginMutation()
+    const handleError = useErrorHandler();
+
+    const dispatch = useDispatch()
+
+    const handleLogin = async () => {
+        console.log(email, password);
+        try {
+            const res = await login({ email, password }).unwrap();
+            dispatch(setCredentials({
+                userInfo: res.user,
+                token: res.accessToken,
+                refreshToken: res.refreshToken
+            }));
+
+            console.log(res);
+
+            Toast.show({
+                type: 'success',
+                text1: 'Welcome back!',
+                text2: 'You have successfully logged in.',
+            });
+
+            router.push('/(tabs)');
+
+        } catch (error: any) {
+            handleError(error);
+            if (error.data?.message === 'Please verify your email first' || error.data?.message?.message === 'Please verify your email first') {
+                router.push(`/otp`);
+            }
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-[#050505]">
@@ -84,9 +121,14 @@ export default function LoginScreen() {
 
                         <TouchableOpacity
                             className="bg-white/10 py-4 rounded-full items-center active:bg-white/20 border border-white/5 mt-2"
-                            onPress={() => router.replace('/(tabs)')}
+                            onPress={handleLogin}
                         >
-                            <Text className="text-white text-lg font-semibold">Login</Text>
+
+                            {isLoading ? (
+                                <ActivityIndicator size="small" color="#fff" />
+                            ) : (
+                                <Text className="text-white text-lg font-semibold">Login</Text>
+                            )}
                         </TouchableOpacity>
                     </View>
 

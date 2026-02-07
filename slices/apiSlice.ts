@@ -11,7 +11,7 @@ interface ErrorResponse {
 }
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "https://api.showflx.com/api/v1",
+    baseUrl: "http://172.20.10.3:3000/api",
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as any).auth.token;
         if (token) {

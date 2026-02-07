@@ -57,7 +57,6 @@ export default function SettingsPage() {
                     </View>
                 </View>
 
-                {/* Account Settings */}
                 <View className="mb-6">
                     <Text className="text-secondary text-xs font-bold uppercase tracking-wider mb-2 ml-1">Account</Text>
                     <View className="bg-card rounded-2xl px-4 border border-white/5 overflow-hidden">
@@ -68,7 +67,6 @@ export default function SettingsPage() {
                     </View>
                 </View>
 
-                {/* App Settings */}
                 <View className="mb-6">
                     <Text className="text-secondary text-xs font-bold uppercase tracking-wider mb-2 ml-1">Preferences</Text>
                     <View className="bg-card rounded-2xl px-4 border border-white/5 overflow-hidden">
@@ -84,7 +82,6 @@ export default function SettingsPage() {
                     </View>
                 </View>
 
-                {/* Support */}
                 <View className="mb-8">
                     <Text className="text-secondary text-xs font-bold uppercase tracking-wider mb-2 ml-1">Support</Text>
                     <View className="bg-card rounded-2xl px-4 border border-white/5 overflow-hidden">

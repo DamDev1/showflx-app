@@ -55,9 +55,13 @@ const TRENDING = [
     }
 ];
 
+import { useGetTrendingMoviesQuery } from '@/slices/movieApiSlice';
 import { useRouter } from 'expo-router';
 
 export default function BrowsePage() {
+    const { data: trendingMovies } = useGetTrendingMoviesQuery({});
+
+    console.log(trendingMovies)
     const router = useRouter();
     return (
         <SafeAreaView className='flex-1 bg-background' edges={['top']}>
@@ -94,20 +98,20 @@ export default function BrowsePage() {
                     />
                     <FlatList
                         horizontal
-                        data={TRENDING}
+                        data={trendingMovies}
                         renderItem={({ item }) => (
-                            <View className={``}>
+                            <View>
                                 <View>
                                     <MovieCard
                                         title={item.title}
-                                        imageUrl={item.imageUrl}
+                                        imageUrl={item.thumbnailUrl}
                                         variant="compact"
-                                        onPress={() => router.push('/(tabs)/shorts')}
+                                        onPress={() => router.push(`/movie/${item._id}`)}
                                     />
                                 </View>
                             </View>
                         )}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item._id}
                         showsHorizontalScrollIndicator={false}
                         contentContainerStyle={{ paddingHorizontal: 16 }}
                     />

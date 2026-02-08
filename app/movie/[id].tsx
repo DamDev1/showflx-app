@@ -1,12 +1,16 @@
+import { useGetMovieByIdQuery } from "@/slices/movieApiSlice";
+import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Bookmark, Check, ChevronLeft, Info, Maximize2, Play, Share, ThumbsDown } from "lucide-react-native";
+import { useVideoPlayer, VideoView } from "expo-video";
+import { Bookmark, ChevronLeft, Maximize2, Share, ThumbsDown } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width, height } = Dimensions.get('window');
 
-// Mock data integration would go here
 const MOVIE = {
     title: "Blade Runner 2049",
     year: "2017",
@@ -38,15 +42,44 @@ const MOVIE = {
 
 export default function MovieDetailScreen() {
     const { id } = useLocalSearchParams();
+    const { data: movie } = useGetMovieByIdQuery(id);
+    const [selectedSeasonId, setSelectedSeasonId] = useState<string | null>(null);
+    const [isFocus, setIsFocus] = useState(false);
     const router = useRouter();
     const insets = useSafeAreaInsets();
 
+    const player = useVideoPlayer(movie?.trailerUrl, player => {
+        player.loop = false;
+        player.play();
+    });
+
+
+    useEffect(() => {
+        if (movie?.seasons?.length > 0 && !selectedSeasonId) {
+            setSelectedSeasonId(movie.seasons[0]._id);
+        }
+    }, [movie]);
+
+    const seasonsData = movie?.seasons?.map((season: any) => ({
+        label: `Season ${season.seasonNumber}`,
+        value: season._id,
+    })) || [];
+
+    const castsData = movie?.casts?.map((cast: any) => ({
+        name: cast.name,
+        job: cast.job,
+    })) || [];
+
     return (
         <View className="flex-1 bg-white">
-            {/* Hero Section */}
-            <View className="relative w-full h-[60%]">
+            <View className="relative w-full h-[30%]">
                 <View className="w-full h-full relative">
-                    <Image source={{ uri: MOVIE.posterUrl }} className="w-full h-full" resizeMode="cover" />
+                    <VideoView
+                        player={player}
+                        style={{ flex: 1, width: '100%', height: '100%' }}
+                        contentFit="cover"
+                        nativeControls={false} // Only show controls for the movie
+                    />
                     <View className="absolute inset-0 bg-black/60" />
                 </View>
 
@@ -71,84 +104,89 @@ export default function MovieDetailScreen() {
                         </TouchableOpacity>
                     </View>
                 </View>
-
-                {/* Title Overlay */}
-                <View className="absolute bottom-12 left-6 right-6">
-                    <Text className="text-4xl font-bold text-white text-center mb-2">{MOVIE.title}</Text>
-                    <Text className="text-gray-300 text-center font-medium">{MOVIE.year} • {MOVIE.duration}</Text>
-
-                    <Text className="text-gray-300 text-center mt-4 text-sm leading-5 px-4" numberOfLines={3}>
-                        {MOVIE.description} <Text className="font-bold text-white">MORE</Text>
-                    </Text>
-
-                    <TouchableOpacity
-                        className="flex-row items-center justify-center bg-white self-center px-8 py-3 rounded-full mt-6 shadow-lg shadow-black/20"
-                        onPress={() => router.push(`/watch/${id}`)}
-                    >
-                        <Play size={20} color="black" fill="black" />
-                        <Text className="text-black font-bold ml-2 text-base">Watch Movie</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
 
-            {/* Content Sheet */}
-            <View className="flex-1 bg-white -mt-6 rounded-t-3xl px-6 pt-8 pb-8">
+            <View className="flex-1 bg-background -mt-6 rounded-t-3xl px-6 pt-8 pb-8">
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-                    {/* Ratings */}
                     <View className="mb-8">
-                        <View className="flex-row items-center mb-4">
-                            <Text className="text-lg font-bold text-primary mr-2">Ratings</Text>
-                            <Info size={16} color="#8E8E93" />
-                        </View>
-
-                        <View className="flex-row justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                            <View className="flex-row items-center gap-2">
-                                <View className="bg-yellow-400 px-1.5 py-0.5 rounded"><Text className="text-xs font-bold">IMDb</Text></View>
-                                <Text className="font-bold text-primary">{MOVIE.ratings.imdb}<Text className="text-secondary font-normal">/10</Text></Text>
-                            </View>
-                            <View className="flex-row items-center gap-2">
-                                <Image source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg" }} className="w-6 h-6" resizeMode="contain" />
-                                <Text className="font-bold text-primary">{MOVIE.ratings.amazon}<Text className="text-secondary font-normal">/5</Text></Text>
-                            </View>
-                            <View className="flex-row items-center gap-2">
-                                <View className="bg-red-500 w-6 h-6 rounded-full items-center justify-center"><Text className="text-white text-[10px] font-bold">RT</Text></View>
-                                <Text className="font-bold text-primary">{MOVIE.ratings.rt}</Text>
-                            </View>
-                        </View>
+                        <Text className="text-2xl font-bold text-primary">{movie?.title}</Text>
+                        <Text className="text-gray-300 mt-3 text-sm leading-5" numberOfLines={3}>
+                            {movie?.description}
+                        </Text>
                     </View>
+
+                    {movie?.type?.toLowerCase() === 'series' && movie && movie.seasons?.length > 0 && (
+                        <View className="mb-8">
+                            <View className="flex-row justify-between items-center mb-8">
+                                <Text className="text-lg font-bold text-primary">Episodes</Text>
+                                <View className="w-40">
+                                    <Dropdown
+                                        style={[
+                                            {
+                                                height: 40,
+                                                borderColor: '#333',
+                                                borderWidth: 1,
+                                                borderRadius: 8,
+                                                paddingHorizontal: 8,
+                                                backgroundColor: '#0a0a0a',
+                                            },
+                                            isFocus && { borderColor: '#333' },
+                                        ]}
+                                        placeholderStyle={{ fontSize: 14, color: '#888' }}
+                                        selectedTextStyle={{ fontSize: 14, color: 'white' }}
+                                        inputSearchStyle={{ height: 40, fontSize: 16 }}
+                                        iconStyle={{ width: 20, height: 20, tintColor: 'white' }}
+                                        data={seasonsData}
+                                        search={false}
+                                        maxHeight={300}
+                                        labelField="label"
+                                        valueField="value"
+                                        placeholder={!isFocus ? 'Select season' : '...'}
+                                        searchPlaceholder="Search..."
+                                        value={selectedSeasonId}
+                                        onFocus={() => setIsFocus(true)}
+                                        onBlur={() => setIsFocus(false)}
+                                        onChange={item => {
+                                            setSelectedSeasonId(item.value);
+                                            setIsFocus(false);
+                                        }}
+                                        containerStyle={{ backgroundColor: '#0a0a0a', borderColor: '#333', borderWidth: 1, borderRadius: 8 }}
+                                        itemTextStyle={{ color: '#ccc' }}
+                                        activeColor="#333"
+                                    />
+                                </View>
+                            </View>
+                            {movie.seasons
+                                .find((s: any) => s._id === selectedSeasonId)
+                                ?.episodes?.map((ep: any, index: number) => {
+                                    return (
+                                        <View key={ep._id || index} className="flex-row mb-4 gap-4">
+                                            <Image source={{ uri: ep.thumbnail }} className="w-28 h-20 rounded-lg bg-gray-200" resizeMode="cover" />
+                                            <View className="flex-1 justify-center">
+                                                <Text className="font-bold text-primary">{ep.episodeNumber}. {ep.title}</Text>
+                                                <Text className="text-xs text-gray-500">{ep.duration} • {ep.description}</Text>
+                                            </View>
+                                            {/* <View className="justify-center">
+                                                <Check size={16} color="#ccc" />
+                                            </View> */}
+                                        </View>
+                                    )
+                                })}
+                        </View>
+                    )}
 
                     {/* Cast Section */}
                     <View className="mb-8">
                         <Text className="text-lg font-bold text-primary mb-4">Cast</Text>
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            {MOVIE.cast.map((actor) => (
-                                <View key={actor.id} className="mr-4 items-center w-20">
-                                    <Image source={{ uri: actor.image }} className="w-16 h-16 rounded-full bg-gray-200 mb-2" />
+                            {castsData.map((actor: any, index: number) => (
+                                <View key={index} className="mr-4 items-center w-20">
+                                    <Image source={{ uri: "https://image.tmdb.org/t/p/w200/lyUyVARQKhGxaxy0FUENSWE139z.jpg" }} className="w-16 h-16 rounded-full bg-gray-200 mb-2" />
                                     <Text className="text-xs font-bold text-center text-primary" numberOfLines={1}>{actor.name}</Text>
-                                    <Text className="text-[10px] text-center text-gray-500" numberOfLines={1}>{actor.role}</Text>
+                                    <Text className="text-[10px] text-center text-gray-500" numberOfLines={1}>{actor.job}</Text>
                                 </View>
                             ))}
                         </ScrollView>
-                    </View>
-
-                    {/* Episodes Section (Mocking for now, usually conditional) */}
-                    <View className="mb-8">
-                        <View className="flex-row justify-between items-center mb-4">
-                            <Text className="text-lg font-bold text-primary">Season 1</Text>
-                            <Text className="text-sm font-semibold text-primary">All episodes ›</Text>
-                        </View>
-                        {MOVIE.episodes.map((ep) => (
-                            <View key={ep.id} className="flex-row mb-4 gap-4">
-                                <Image source={{ uri: ep.image }} className="w-28 h-16 rounded-lg bg-gray-200" resizeMode="cover" />
-                                <View className="flex-1 justify-center">
-                                    <Text className="font-bold text-primary">{ep.id}. {ep.title}</Text>
-                                    <Text className="text-xs text-gray-500">{ep.duration} • {ep.synopsis}</Text>
-                                </View>
-                                <View className="justify-center">
-                                    <Check size={16} color="#ccc" />
-                                </View>
-                            </View>
-                        ))}
                     </View>
 
                     {/* Media */}
@@ -179,18 +217,17 @@ export default function MovieDetailScreen() {
             </View>
 
             {/* Floating Action Bar */}
-            <View className="absolute bottom-8 left-6 right-6 flex-row justify-between items-center bg-white shadow-lg shadow-black/10 rounded-full p-2 border border-gray-100">
-
-                <TouchableOpacity className="flex-1 flex-row items-center justify-center py-3 rounded-full">
-                    <ThumbsDown size={20} color="#1A1A1A" />
-                    <Text className="ml-2 font-bold text-primary">Hide</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity className="flex-1 flex-row items-center justify-center py-3 bg-accent rounded-full shadow-lg">
+            <BlurView intensity={20} tint="dark" className="absolute bottom-16 left-6 right-6 flex-row justify-between items-center overflow-hidden rounded-full p-2 border border-white/20">
+                <TouchableOpacity className="flex-1 flex-row items-center justify-center py-4 rounded-full">
                     <Bookmark size={20} color="white" fill="transparent" />
                     <Text className="ml-2 font-bold text-white">Save</Text>
+
                 </TouchableOpacity>
-            </View>
+
+                <TouchableOpacity onPress={() => router.push(`/watch/${id}`)} className="flex-1 flex-row items-center justify-center py-4 bg-accent rounded-full shadow-lg">
+                    <Text className="ml-2 font-bold text-primary">Watch now</Text>
+                </TouchableOpacity>
+            </BlurView>
         </View>
     );
 }

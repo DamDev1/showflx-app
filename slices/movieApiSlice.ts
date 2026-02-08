@@ -20,13 +20,38 @@ export const movieApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        getTrendingMovies: builder.query<Movie[], void>({
-            query: () => '/movies/trending',
-        }),
-
         shortListMovies: builder.query<{ shorts: Short[] }, void>({
             query: () => '/user/shorts',
             providesTags: ['Shorts'],
+        }),
+        getMovieById: builder.query({
+            query: (id) => `/user/movies/${id}`,
+        }),
+        getTrendingMovies: builder.query({
+            query: () => '/user/browse/trending',
+        }),
+        getPopularMovies: builder.query({
+            query: () => '/user/browse/popular',
+        }),
+        getNewReleases: builder.query({
+            query: () => '/user/browse/new-releases',
+        }),
+        getContinueWatching: builder.query({
+            query: () => '/user/history',
+            keepUnusedDataFor: 0, // Always refetch to get latest progress
+        }),
+        saveWatchProgress: builder.mutation({
+            query: (data) => ({
+                url: '/user/history',
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        incrementMovieView: builder.mutation({
+            query: (id) => ({
+                url: `/user/movies/${id}/view`,
+                method: 'POST',
+            }),
         }),
     }),
 });
@@ -41,4 +66,4 @@ export interface Short {
     comments: string;
 }
 
-export const { useSearchMoviesQuery, useGetTrendingMoviesQuery, useShortListMoviesQuery } = movieApiSlice;
+export const { useSearchMoviesQuery, useGetTrendingMoviesQuery, useShortListMoviesQuery, useGetMovieByIdQuery, useGetPopularMoviesQuery, useGetNewReleasesQuery, useGetContinueWatchingQuery, useSaveWatchProgressMutation, useIncrementMovieViewMutation } = movieApiSlice;
